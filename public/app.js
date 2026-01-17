@@ -1,39 +1,41 @@
 const API = "";
 
-/* ===== AUTH ===== */
-async function login() {
-  const res = await fetch("/api/login", {
+const API = "http://localhost:3000/api";
+let token = localStorage.getItem("token");
+
+function setToken(t) {
+  localStorage.setItem("token", t);
+  location.href = "products.html";
+}
+
+// LOGIN
+function login() {
+  fetch(`${API}/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       identifier: loginUser.value,
       password: loginPass.value
     })
-  });
-  const data = await res.json();
-  if (!res.ok) return alert(data.error);
-
-  localStorage.setItem("token", data.token);
-  localStorage.setItem("user", JSON.stringify(data.user));
-  location.href = "products.html";
+  })
+    .then(r => r.json())
+    .then(d => setToken(d.token));
 }
 
-async function adminKeyLogin() {
-  const res = await fetch("/api/admin-key", {
+// ADMIN KEY
+function adminKeyLogin() {
+  fetch(`${API}/admin-key`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ key: adminKeyInput.value })
-  });
-  const data = await res.json();
-  if (!res.ok) return alert(data.error);
-
-  localStorage.setItem("token", data.token);
-  localStorage.setItem("user", JSON.stringify(data.user));
-  location.href = "products.html";
+  })
+    .then(r => r.json())
+    .then(d => setToken(d.token));
 }
 
+// LOGOUT
 function logout() {
-  localStorage.clear();
+  localStorage.removeItem("token");
   location.href = "index.html";
 }
 
