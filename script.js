@@ -1,22 +1,3 @@
-// === TOKEN PAGE LOGIC ===
-function verifyToken(){
-  const token = document.getElementById("tokenInput").value.trim();
-  const validTokens = JSON.parse(localStorage.getItem(TOKENS_KEY));
-  if(validTokens.includes(token)){
-    localStorage.setItem("hasAccess", "true");
-    window.location.href="products.html";
-  } else {
-    document.getElementById("tokenMsg").textContent = "Invalid token!";
-  }
-}
-
-// Redirect users to token page if they haven't entered a valid token
-if(window.location.pathname.endsWith("products.html")){
-  if(localStorage.getItem("hasAccess") !== "true"){
-    window.location.href="token.html";
-  }
-}
-
 // === LOCAL STORAGE KEYS ===
 const USERS_KEY = "v1leshopUsers";
 const TOKENS_KEY = "v1leshopTokens";
@@ -41,6 +22,25 @@ if(!localStorage.getItem(PRODUCTS_KEY)){
 }
 if(!localStorage.getItem(STORE_KEY)){
   localStorage.setItem(STORE_KEY, JSON.stringify({open:true}));
+}
+
+// === TOKEN PAGE LOGIC ===
+function verifyToken(){
+  const token = document.getElementById("tokenInput").value.trim();
+  const validTokens = JSON.parse(localStorage.getItem(TOKENS_KEY));
+  if(validTokens.includes(token)){
+    localStorage.setItem("hasAccess", "true");
+    window.location.href="products.html";
+  } else {
+    document.getElementById("tokenMsg").textContent = "Invalid token!";
+  }
+}
+
+// Redirect users to token page if they haven't entered a valid token
+if(window.location.pathname.endsWith("products.html")){
+  if(localStorage.getItem("hasAccess") !== "true"){
+    window.location.href="token.html";
+  }
 }
 
 // === AUTH FUNCTIONS ===
@@ -75,7 +75,7 @@ function logout(){
   window.location.href="index.html";
 }
 
-// === PRODUCT PAGE LOGIC with Gram Selector ===
+// === PRODUCT PAGE LOGIC with Gram Selector + Token Check ===
 if(window.location.pathname.endsWith("products.html")){
   const user = JSON.parse(localStorage.getItem("currentUser"));
   if(!user){ alert("Login required"); window.location.href="index.html"; }
@@ -117,6 +117,7 @@ if(window.location.pathname.endsWith("products.html")){
     buyBtn.className = "neon-btn";
     buyBtn.textContent = "Buy";
     buyBtn.onclick = () => {
+      if(localStorage.getItem("hasAccess") !== "true"){ alert("Token required!"); return; }
       let grams = parseFloat(gramInput.value);
       if(isNaN(grams) || grams < 2){ alert("Minimum order is 2 grams ($20)"); return; }
       let price = grams * 10;
@@ -203,4 +204,5 @@ function importData(event){
   };
   reader.readAsText(file);
 }
+
 
