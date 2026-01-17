@@ -1,44 +1,50 @@
 body {
-  background: black;
-  color: red;
-  font-family: Arial;
+  background: #0a0a0a;
+  color: #fff;
+  font-family: Arial, sans-serif;
+  padding: 20px;
 }
 
-.neon-title {
-  text-align: center;
-  text-shadow: 0 0 15px red;
+header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+button {
+  background: transparent;
+  color: #ff2a2a;
+  border: 2px solid #ff2a2a;
+  padding: 6px 14px;
+  cursor: pointer;
+  box-shadow: 0 0 10px #ff2a2a;
+}
+
+button:hover {
+  background: #ff2a2a;
+  color: #000;
+  box-shadow: 0 0 20px #ff2a2a;
 }
 
 .neon-btn {
-  border: 2px solid red;
-  background: transparent;
-  color: red;
-  padding: 10px;
-  margin: 5px;
-  box-shadow: 0 0 10px red;
+  box-shadow: 0 0 15px #ff2a2a;
 }
 
-.neon-btn.small {
-  padding: 6px 14px;
+.small {
+  font-size: 12px;
 }
 
 .product {
-  border: 1px solid red;
+  border: 1px solid #ff2a2a;
   padding: 10px;
-  margin: 10px;
+  margin-bottom: 10px;
+  box-shadow: 0 0 10px #ff2a2a;
 }
 
-.modal {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.9);
-}
-
-.modal-content {
-  width: 300px;
-  margin: 10% auto;
-  border: 2px solid red;
-  padding: 15px;
-  box-shadow: 0 0 20px red;
+input {
+  background: #000;
+  color: #fff;
+  border: 1px solid #ff2a2a;
+  margin: 0 10px;
+  width: 80px;
 }
