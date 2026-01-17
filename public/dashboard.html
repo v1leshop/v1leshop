@@ -1,33 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>v1leshop - Admin Dashboard</title>
-<link rel="stylesheet" href="style.css">
+  <title>Admin Dashboard • v1leshop</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="container">
-  <h1 class="neon-text">Admin Dashboard</h1>
 
-  <h2>Store Status</h2>
-  <div id="storeStatus"></div>
-  <button class="neon-btn" onclick="toggleStore()">Toggle Store</button>
+<h2>🛠 Admin Dashboard</h2>
 
-  <h2>Products</h2>
-  <div id="productToggles"></div>
+<button onclick="exportDB()">⬇ Export Database</button>
 
-  <h2>Create Token</h2>
-  <input id="newToken" placeholder="Enter new token">
-  <button class="neon-btn" onclick="createToken()">Add Token</button>
+<pre id="output"></pre>
 
-  <h2>Orders</h2>
-  <div id="orderList"></div>
+<script>
+function exportDB() {
+  fetch('/api/export')
+    .then(res => res.text())
+    .then(data => {
+      document.getElementById('output').textContent = data;
+    });
+}
+</script>
 
-  <h2>Export Database</h2>
-  <button class="neon-btn" onclick="exportData()">Export JSON</button>
-  <input type="file" onchange="importData(event)">
-</div>
-<script src="script.js"></script>
 </body>
 </html>
