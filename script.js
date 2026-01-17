@@ -4,6 +4,9 @@ const TOKENS_KEY = "v1leshopTokens";
 const STORE_KEY = "v1leshopStore";
 const PRODUCTS_KEY = "v1leshopProducts";
 
+// === ADMIN CONFIG ===
+const ADMIN_EMAILS = ["v1le.shopsite@gmail.com"];
+
 // === INIT DEFAULT DATA ===
 if(!localStorage.getItem(USERS_KEY)){
   localStorage.setItem(USERS_KEY, JSON.stringify([]));
@@ -23,31 +26,28 @@ if(!localStorage.getItem(STORE_KEY)){
 
 // === AUTH FUNCTIONS ===
 function signup(){
-  const username = document.getElementById("signupUsername").value.trim();
-  const password = document.getElementById("signupPassword").value.trim();
-  const telegram = document.getElementById("signupTelegram").value.trim();
-  const isAdmin = document.getElementById("isAdmin").checked;
-
-  const users = JSON.parse(localStorage.getItem(USERS_KEY));
-  if(users.find(u=>u.username===username)){
+  const u=document.getElementById("signupUsername").value.trim();
+  const p=document.getElementById("signupPassword").value.trim();
+  const t=document.getElementById("signupTelegram").value.trim();
+  const a=document.getElementById("isAdmin").checked;
+  const users=JSON.parse(localStorage.getItem(USERS_KEY));
+  if(users.find(x=>x.username===u)){
     document.getElementById("authMsg").textContent="User exists!";
     return;
   }
-  users.push({username,password,telegram,isAdmin});
+  users.push({username:u,password:p,telegram:t,isAdmin:a});
   localStorage.setItem(USERS_KEY,JSON.stringify(users));
   document.getElementById("authMsg").textContent="Signup success!";
 }
 
 function login(){
-  const username = document.getElementById("loginUsername").value.trim();
-  const password = document.getElementById("loginPassword").value.trim();
-  const telegram = document.getElementById("loginTelegram").value.trim();
-
-  const users = JSON.parse(localStorage.getItem(USERS_KEY));
-  const user = users.find(u=>u.username===username && u.password===password && u.telegram===telegram);
+  const u=document.getElementById("loginUsername").value.trim();
+  const p=document.getElementById("loginPassword").value.trim();
+  const t=document.getElementById("loginTelegram").value.trim();
+  const users=JSON.parse(localStorage.getItem(USERS_KEY));
+  const user=users.find(x=>x.username===u&&x.password===p&&x.telegram===t);
   if(!user){ document.getElementById("authMsg").textContent="Login failed"; return; }
-
-  localStorage.setItem("currentUser", JSON.stringify(user));
+  localStorage.setItem("currentUser",JSON.stringify(user));
   window.location.href="products.html";
 }
 
@@ -56,7 +56,7 @@ function logout(){
   window.location.href="index.html";
 }
 
-// === PRODUCT PAGE LOGIC ===
+// === PRODUCT PAGE LOGIC with Gram Selector ===
 if(window.location.pathname.endsWith("products.html")){
   const user = JSON.parse(localStorage.getItem("currentUser"));
   if(!user){ alert("Login required"); window.location.href="index.html"; }
@@ -67,14 +67,48 @@ if(window.location.pathname.endsWith("products.html")){
   const products = JSON.parse(localStorage.getItem(PRODUCTS_KEY));
   const container = document.getElementById("productsList");
   container.innerHTML="";
-  products.forEach(p=>{
+
+  products.forEach((p,i)=>{
     const div = document.createElement("div");
-    div.textContent = `${p.name} - ${p.inStock ? "In Stock" : "Out of Stock"}`;
+    if(!p.inStock){ div.textContent = `${p.name} - Out of Stock`; container.appendChild(div); return; }
+
+    const title = document.createElement("div");
+    title.textContent = p.name;
+    div.appendChild(title);
+
+    const gramInput = document.createElement("input");
+    gramInput.type = "number";
+    gramInput.step = "0.5";
+    gramInput.min = "0.5";
+    gramInput.placeholder = "Enter grams (min 2g / $20)";
+    div.appendChild(gramInput);
+
+    const priceDisplay = document.createElement("div");
+    priceDisplay.style.margin = "6px 0";
+    div.appendChild(priceDisplay);
+
+    gramInput.oninput = () => {
+      let grams = parseFloat(gramInput.value);
+      if(isNaN(grams) || grams < 2) grams = 2;
+      let price = grams * 10;
+      priceDisplay.textContent = `Total: $${price.toFixed(2)} for ${grams}g`;
+    };
+
+    const buyBtn = document.createElement("button");
+    buyBtn.className = "neon-btn";
+    buyBtn.textContent = "Buy";
+    buyBtn.onclick = () => {
+      let grams = parseFloat(gramInput.value);
+      if(isNaN(grams) || grams < 2){ alert("Minimum order is 2 grams ($20)"); return; }
+      let price = grams * 10;
+      alert(`Order confirmed:\n${p.name}\n${grams}g - $${price.toFixed(2)}`);
+    };
+    div.appendChild(buyBtn);
+
     container.appendChild(div);
   });
 
-  // Show admin icon
-  if(user.isAdmin){
+  if(user.isAdmin || ADMIN_EMAILS.includes(user.telegram)){
     document.getElementById("adminIcon").style.display="inline";
     document.getElementById("adminIcon").onclick = ()=>window.location.href="dashboard.html";
   }
@@ -83,7 +117,7 @@ if(window.location.pathname.endsWith("products.html")){
 // === DASHBOARD LOGIC ===
 if(window.location.pathname.endsWith("dashboard.html")){
   const user = JSON.parse(localStorage.getItem("currentUser"));
-  if(!user || !user.isAdmin){ alert("Access denied"); window.location.href="index.html"; }
+  if(!user || !(user.isAdmin || ADMIN_EMAILS.includes(user.telegram))){ alert("Access denied"); window.location.href="index.html"; }
 
   renderDashboard();
 }
@@ -123,7 +157,6 @@ function toggleStore(){
   renderDashboard();
 }
 
-// === EXPORT / IMPORT ===
 function exportData(){
   const data = {
     users: JSON.parse(localStorage.getItem(USERS_KEY)),
@@ -131,10 +164,10 @@ function exportData(){
     products: JSON.parse(localStorage.getItem(PRODUCTS_KEY)),
     store: JSON.parse(localStorage.getItem(STORE_KEY))
   };
-  const blob = new Blob([JSON.stringify(data, null,2)], {type:"application/json"});
+  const blob = new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
   const a = document.createElement("a");
   a.href = URL.createObjectURL(blob);
-  a.download = "v1leshop_data.json";
+  a.download="v1leshop_data.json";
   a.click();
 }
 
@@ -151,3 +184,4 @@ function importData(event){
   };
   reader.readAsText(file);
 }
+
