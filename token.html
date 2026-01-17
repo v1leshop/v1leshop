@@ -2,17 +2,28 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>v1leshop - Enter Token</title>
+<title>Access Portal</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="container">
-  <h1 class="neon-text">Enter Invite Token</h1>
-  <input type="text" id="tokenInput" placeholder="Enter your token">
-  <button class="neon-btn" onclick="verifyToken()">Submit</button>
-  <p id="tokenMsg"></p>
+
+<h1 class="neon-text">Enter Access Token</h1>
+
+<div class="auth-box">
+<input id="tokenInput" placeholder="Invite Token">
+<button onclick="verifyToken()">Enter Store</button>
+<p id="tokenMsg"></p>
 </div>
+
+<hr style="margin:30px; border-color:#ff0000;">
+
+<div class="auth-box">
+<h2>Admin Key</h2>
+<input id="adminKeyInput" placeholder="Admin Authorization Key">
+<button onclick="adminKeyLogin()">Admin Login</button>
+<p id="adminKeyMsg"></p>
+</div>
+
 <script src="script.js"></script>
 </body>
 </html>
