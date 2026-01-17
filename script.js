@@ -131,3 +131,19 @@ function adminKeyLogin() {
 
     window.location.href = "dashboard.html";
 }
+
+// ================= XP BAR & ADMIN BADGE =================
+if (window.location.pathname.endsWith("products.html")) {
+    const user = JSON.parse(localStorage.getItem("currentUser"));
+    if (!user) {
+        window.location.href = "index.html";
+    }
+
+    const badge = document.getElementById("userBadge");
+    badge.textContent = user.isAdmin ? "👑 ADMIN" : "User";
+    badge.style.color = user.isAdmin ? "#ff0000" : "#ff6666";
+
+    const xpFill = document.getElementById("xpFill");
+    const xpPercent = (user.xp % 100);
+    xpFill.style.width = xpPercent + "%";
+}
