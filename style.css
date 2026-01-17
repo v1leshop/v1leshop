@@ -1,6 +1,62 @@
-body { font-family: Arial, sans-serif; background:#0f0f0f; color:white; display:flex; justify-content:center; align-items:center; height:100vh; margin:0;}
-.container { background:#1a1a1a; padding:40px; border-radius:12px; width:90%; max-width:400px; box-shadow:0 0 20px rgba(0,0,0,0.5);}
-input { width:100%; padding:10px; margin:5px 0; border-radius:6px; border:none;}
-button { width:100%; padding:10px; background:#1db954; color:black; border:none; border-radius:6px; margin:5px 0; cursor:pointer;}
-button:hover { background:#17a44a;}
-#adminIcon { display:none; }
+body {
+  background-color: #111;
+  color: #fff;
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
+.container {
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 20px;
+  border: 2px solid #0ff;
+  border-radius: 10px;
+  box-shadow: 0 0 20px #0ff;
+}
+input {
+  display: block;
+  margin: 10px auto;
+  padding: 10px;
+  width: 80%;
+  border-radius: 5px;
+  border: 1px solid #0ff;
+  background: #111;
+  color: #0ff;
+}
+button.neon-btn {
+  margin: 10px;
+  padding: 10px 20px;
+  border: 1px solid #0ff;
+  border-radius: 5px;
+  background: #111;
+  color: #0ff;
+  cursor: pointer;
+  transition: 0.2s;
+}
+button.neon-btn:hover {
+  background: #0ff;
+  color: #111;
+}
+.neon-text {
+  color: #0ff;
+  text-shadow: 0 0 10px #0ff, 0 0 20px #0ff;
+}
+.level-display {
+  margin: 10px 0;
+  font-size: 1.2em;
+}
+.admin-icon, .leaderboard-icon {
+  cursor: pointer;
+  margin-left: 10px;
+}
+.modal {
+  display: none;
+  background-color: #222;
+  border: 2px solid #0ff;
+  padding: 10px;
+  border-radius: 10px;
+}
+.modal ul {
+  list-style: none;
+  padding: 0;
+}
+
