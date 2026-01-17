@@ -3,28 +3,31 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>V1LE FARM - Login / Signup</title>
+<title>v1leshop - Login/Signup</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <div class="container">
-  <h1>v1leshop</h1>
-  <div id="auth">
-    <h2>Login</h2>
-    <input type="text" id="loginUsername" placeholder="Username">
-    <input type="password" id="loginPassword" placeholder="Password">
-    <input type="text" id="loginTelegram" placeholder="Telegram username">
-    <button onclick="login()">Login</button>
+  <h1 class="neon-text">v1leshop</h1>
 
-    <h2>Signup</h2>
-    <input type="text" id="signupUsername" placeholder="Username">
-    <input type="password" id="signupPassword" placeholder="Password">
-    <input type="text" id="signupTelegram" placeholder="Telegram username">
-    <label><input type="checkbox" id="isAdmin"> Admin</label>
-    <button onclick="signup()">Signup</button>
-    <p id="authMsg"></p>
-  </div>
+  <h2>Login</h2>
+  <input id="loginUsername" placeholder="Username" type="text">
+  <input id="loginPassword" placeholder="Password" type="password">
+  <input id="loginTelegram" placeholder="Telegram Username" type="text">
+  <input id="loginEmail" placeholder="Email" type="email">
+  <button class="neon-btn" onclick="login()">Login</button>
+
+  <h2>Signup</h2>
+  <input id="signupUsername" placeholder="Username" type="text">
+  <input id="signupPassword" placeholder="Password" type="password">
+  <input id="signupTelegram" placeholder="Telegram Username" type="text">
+  <input id="signupEmail" placeholder="Email" type="email">
+  <label><input type="checkbox" id="isAdmin"> Admin</label>
+  <button class="neon-btn" onclick="signup()">Signup</button>
+
+  <p id="authMsg"></p>
 </div>
 <script src="script.js"></script>
 </body>
 </html>
+
