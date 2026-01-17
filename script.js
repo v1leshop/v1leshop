@@ -98,3 +98,36 @@ function login() {
     localStorage.setItem("currentUser", JSON.stringify(user));
     window.location.href = "products.html";
 }
+
+// ================= TOKEN ACCESS =================
+function verifyToken() {
+    const token = document.getElementById("tokenInput").value.trim();
+    const msg = document.getElementById("tokenMsg");
+    const tokens = JSON.parse(localStorage.getItem(TOKENS_KEY));
+
+    if (tokens.includes(token)) {
+        localStorage.setItem("hasAccess", "true");
+        window.location.href = "index.html";
+    } else {
+        msg.textContent = "Invalid token";
+    }
+}
+
+// ================= ADMIN KEY LOGIN =================
+function adminKeyLogin() {
+    const key = document.getElementById("adminKeyInput").value.trim();
+    const msg = document.getElementById("adminKeyMsg");
+
+    if (key !== "V1LE-FARM-OWNER-1-ID-20092411") {
+        msg.textContent = "Invalid admin key";
+        return;
+    }
+
+    const users = JSON.parse(localStorage.getItem(USERS_KEY));
+    const admin = users.find(u => u.isAdmin === true);
+
+    localStorage.setItem("currentUser", JSON.stringify(admin));
+    localStorage.setItem("hasAccess", "true");
+
+    window.location.href = "dashboard.html";
+}
