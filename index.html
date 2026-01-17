@@ -3,31 +3,56 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>v1leshop - Login/Signup</title>
+<title>v1leshop - Login / Signup</title>
 <link rel="stylesheet" href="style.css">
+<style>
+  .auth-section {
+    border: 1px solid #0ff;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 400px;
+    box-shadow: 0 0 10px #0ff;
+  }
+  .auth-section h2 {
+    margin-bottom: 10px;
+    color: #0ff;
+  }
+  .auth-section input {
+    margin-bottom: 10px;
+  }
+  .auth-msg {
+    color: #ff0;
+    margin-top: 10px;
+  }
+</style>
 </head>
 <body>
 <div class="container">
   <h1 class="neon-text">v1leshop</h1>
 
-  <h2>Login</h2>
-  <input id="loginUsername" placeholder="Username" type="text">
-  <input id="loginPassword" placeholder="Password" type="password">
-  <input id="loginTelegram" placeholder="Telegram Username" type="text">
-  <input id="loginEmail" placeholder="Email" type="email">
-  <button class="neon-btn" onclick="login()">Login</button>
+  <!-- LOGIN SECTION -->
+  <div class="auth-section">
+    <h2>Login</h2>
+    <input id="loginUserEmail" placeholder="Username or Email" type="text">
+    <input id="loginPassword" placeholder="Password" type="password">
+    <input id="loginTelegram" placeholder="Telegram Username" type="text">
+    <button class="neon-btn" onclick="login()">Login</button>
+    <p id="loginMsg" class="auth-msg"></p>
+  </div>
 
-  <h2>Signup</h2>
-  <input id="signupUsername" placeholder="Username" type="text">
-  <input id="signupPassword" placeholder="Password" type="password">
-  <input id="signupTelegram" placeholder="Telegram Username" type="text">
-  <input id="signupEmail" placeholder="Email" type="email">
-  <label><input type="checkbox" id="isAdmin"> Admin</label>
-  <button class="neon-btn" onclick="signup()">Signup</button>
-
-  <p id="authMsg"></p>
+  <!-- SIGNUP SECTION -->
+  <div class="auth-section">
+    <h2>Signup</h2>
+    <input id="signupUsername" placeholder="Username" type="text">
+    <input id="signupEmail" placeholder="Email" type="email">
+    <input id="signupPassword" placeholder="Password" type="password">
+    <input id="signupTelegram" placeholder="Telegram Username" type="text">
+    <button class="neon-btn" onclick="signup()">Signup</button>
+    <p id="signupMsg" class="auth-msg"></p>
+  </div>
 </div>
+
 <script src="script.js"></script>
 </body>
 </html>
-
