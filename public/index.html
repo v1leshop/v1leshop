@@ -6,24 +6,21 @@
 </head>
 <body>
 
-<h1 class="neon-title">v1leshop</h1>
+<h2>🔐 Login</h2>
 
-<div class="auth-box">
-  <h2>Login</h2>
-  <input id="loginUser" placeholder="Username or Email">
-  <input id="loginPass" type="password" placeholder="Password">
-  <button class="neon-btn" onclick="login()">Login</button>
+<input id="loginUser" placeholder="Username or Email">
+<br><br>
+<input id="loginPass" type="password" placeholder="Password">
+<br><br>
+<button onclick="login()">Login</button>
 
-  <h3>Sign Up</h3>
-  <input id="signupUser" placeholder="Username">
-  <input id="signupEmail" placeholder="Email">
-  <input id="signupTelegram" placeholder="Telegram">
-  <input id="signupPass" type="password" placeholder="Password">
-  <button class="neon-btn" onclick="signup()">Create Account</button>
+<hr>
 
-  <div id="authMsg"></div>
-</div>
+<h3>🔑 Admin Key</h3>
+<input id="adminKeyInput" placeholder="Admin Key">
+<br><br>
+<button onclick="adminKeyLogin()">Enter Admin</button>
 
-<script src="script.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
