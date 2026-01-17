@@ -1,118 +1,100 @@
 import express from "express";
-import cors from "cors";
+import fs from "fs";
 import dotenv from "dotenv";
-import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { Low } from "lowdb";
-import { JSONFile } from "lowdb/node";
-import { nanoid } from "nanoid";
+import bcrypt from "bcryptjs";
+import cors from "cors";
 
 dotenv.config();
 
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use(express.static("../public"));
 
-const db = new Low(new JSONFile("db.json"), {
-  users: [],
-  orders: [],
-  products: [
-    { id: 1, name: "God Complex", price: 10, inStock: true },
-    { id: 2, name: "Killer Green Budz", price: 10, inStock: true }
-  ]
-});
+const DB_FILE = "./server/db.json";
+const JWT_SECRET = process.env.JWT_SECRET;
 
-await db.read();
-await db.write();
+// ===== DB HELPERS =====
+const readDB = () => JSON.parse(fs.readFileSync(DB_FILE));
+const writeDB = (data) => fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2));
 
-/* --- ADMIN BOOTSTRAP --- */
-if (!db.data.users.find(u => u.username === process.env.ADMIN_USERNAME)) {
-  db.data.users.push({
-    id: nanoid(),
-    username: process.env.ADMIN_USERNAME,
-    email: process.env.ADMIN_EMAIL,
-    password: await bcrypt.hash(process.env.ADMIN_PASSWORD, 10),
-    telegram: "v1le shop",
-    level: 99,
-    xp: 0,
-    isAdmin: true,
-    private: false
-  });
-  await db.write();
+// ===== ADMIN AUTO-CREATE =====
+(function initAdmin() {
+  const db = readDB();
+  if (!db.users.find(u => u.isAdmin)) {
+    db.users.push({
+      id: Date.now(),
+      username: process.env.ADMIN_USERNAME,
+      email: process.env.ADMIN_EMAIL,
+      password: bcrypt.hashSync(process.env.ADMIN_PASSWORD, 10),
+      telegram: "v1le shop",
+      xp: 0,
+      level: 99,
+      private: false,
+      isAdmin: true
+    });
+    writeDB(db);
+    console.log("✅ Admin account created");
+  }
+})();
+
+// ===== AUTH MIDDLEWARE =====
+function auth(req, res, next) {
+  const token = req.headers.authorization;
+  if (!token) return res.sendStatus(401);
+  try {
+    req.user = jwt.verify(token, JWT_SECRET);
+    next();
+  } catch {
+    res.sendStatus(403);
+  }
 }
 
-/* --- AUTH --- */
-app.post("/api/login", async (req, res) => {
-  const { identifier, password } = req.body;
-  const user = db.data.users.find(
-    u => u.username === identifier || u.email === identifier
-  );
-  if (!user) return res.status(401).json({ error: "Invalid login" });
+function adminOnly(req, res, next) {
+  if (!req.user.isAdmin) return res.sendStatus(403);
+  next();
+}
 
-  const ok = await bcrypt.compare(password, user.password);
-  if (!ok) return res.status(401).json({ error: "Invalid login" });
+// ===== AUTH =====
+app.post("/api/signup", (req, res) => {
+  const { username, email, password, telegram } = req.body;
+  const db = readDB();
 
-  const token = jwt.sign(
-    { id: user.id, admin: user.isAdmin },
-    process.env.JWT_SECRET,
-    { expiresIn: "12h" }
-  );
+  if (db.users.find(u => u.username === username || u.email === email))
+    return res.status(400).json({ error: "User exists" });
 
-  res.json({ token, user: { username: user.username, level: user.level, xp: user.xp, isAdmin: user.isAdmin } });
-});
-
-app.post("/api/admin-key", (req, res) => {
-  if (req.body.key !== process.env.ADMIN_KEY)
-    return res.status(401).json({ error: "Invalid key" });
-
-  const admin = db.data.users.find(u => u.isAdmin);
-  const token = jwt.sign(
-    { id: admin.id, admin: true },
-    process.env.JWT_SECRET,
-    { expiresIn: "12h" }
-  );
-
-  res.json({ token, user: { username: admin.username, level: admin.level, xp: admin.xp, isAdmin: true } });
-});
-
-/* --- PRODUCTS --- */
-app.get("/api/products", async (_, res) => {
-  res.json(db.data.products.filter(p => p.inStock));
-});
-
-/* --- ORDERS --- */
-app.post("/api/order", async (req, res) => {
-  const { userId, product, grams } = req.body;
-  const price = grams * 10;
-
-  const pending = db.data.orders.filter(o => o.userId === userId && o.status === "pending");
-  if (pending.length >= 2)
-    return res.status(400).json({ error: "Max 2 pending orders" });
-
-  db.data.orders.push({
-    id: nanoid(),
-    userId,
-    product,
-    grams,
-    price,
-    status: "pending"
+  db.users.push({
+    id: Date.now(),
+    username,
+    email,
+    telegram,
+    password: bcrypt.hashSync(password, 10),
+    xp: 0,
+    level: 1,
+    private: false,
+    isAdmin: false
   });
 
-  const user = db.data.users.find(u => u.id === userId);
-  user.xp += grams * 10;
-  user.level = Math.floor(user.xp / 100) + 1;
-
-  await db.write();
+  writeDB(db);
   res.json({ success: true });
 });
 
-app.get("/api/orders/:userId", (req, res) => {
-  res.json(
-    db.data.orders.filter(o => o.userId === req.params.userId).slice(-5)
+app.post("/api/login", (req, res) => {
+  const { identifier, password } = req.body;
+  const db = readDB();
+
+  const user = db.users.find(
+    u => u.username === identifier || u.email === identifier
   );
+  if (!user || !bcrypt.compareSync(password, user.password))
+    return res.sendStatus(401);
+
+  const token = jwt.sign(user, JWT_SECRET);
+  res.json({ token });
 });
 
-app.listen(3000, () => {
-  console.log("✅ v1leshop backend running on http://localhost:3000");
-});
+// ===== ADMIN KEY LOGIN =====
+app.post("/api/admin-key", (req, res) => {
+  if (req.body.key !== process.env.ADMIN_KEY) return res.sendStatus(403);
+  const db = readDB();
+  const admin = db.users.find(u => u.i
