@@ -1,1 +1,18 @@
-
+{
+  "users": [],
+  "orders": [],
+  "products": [
+    {
+      "id": 1,
+      "name": "God Complex",
+      "price": 10,
+      "inStock": true
+    },
+    {
+      "id": 2,
+      "name": "Killer Green Budz",
+      "price": 10,
+      "inStock": true
+    }
+  ]
+}
