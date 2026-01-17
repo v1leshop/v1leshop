@@ -1,74 +1,44 @@
-.xp-bar {
-    width: 80%;
-    height: 14px;
-    border: 2px solid #ff0000;
-    margin: 15px auto;
-    box-shadow: 0 0 10px #ff0000;
-}
-
-#xpFill {
-    height: 100%;
-    width: 0%;
-    background: #ff0000;
-    box-shadow: 0 0 15px #ff0000;
-}
-
-#userBadge {
-    font-size: 18px;
-    margin-bottom: 10px;
-    text-shadow: 0 0 10px #ff0000;
-}
-
 body {
-    background: #0b0000;
-    color: #ff2a2a;
-    font-family: Arial, sans-serif;
-    text-align: center;
+  background: black;
+  color: red;
+  font-family: Arial;
 }
 
-.neon-text {
-    color: #ff2a2a;
-    text-shadow:
-        0 0 5px #ff0000,
-        0 0 10px #ff0000,
-        0 0 20px #ff0000,
-        0 0 40px #ff0000;
+.neon-title {
+  text-align: center;
+  text-shadow: 0 0 15px red;
 }
 
-.auth-box {
-    border: 2px solid #ff0000;
-    box-shadow: 0 0 15px #ff0000;
-    padding: 20px;
-    width: 320px;
-    margin: 20px auto;
-    border-radius: 10px;
+.neon-btn {
+  border: 2px solid red;
+  background: transparent;
+  color: red;
+  padding: 10px;
+  margin: 5px;
+  box-shadow: 0 0 10px red;
 }
 
-input {
-    width: 90%;
-    padding: 8px;
-    margin: 6px 0;
-    background: #120000;
-    border: 1px solid #ff0000;
-    color: #ff2a2a;
+.neon-btn.small {
+  padding: 6px 14px;
 }
 
-button {
-    margin-top: 10px;
-    padding: 10px;
-    width: 95%;
-    background: transparent;
-    border: 2px solid #ff0000;
-    color: #ff2a2a;
-    cursor: pointer;
-    box-shadow: 0 0 10px #ff0000;
+.product {
+  border: 1px solid red;
+  padding: 10px;
+  margin: 10px;
 }
 
-button:hover {
-    background: #ff0000;
-    color: black;
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.9);
 }
 
-p {
-    color: #ffaaaa;
+.modal-content {
+  width: 300px;
+  margin: 10% auto;
+  border: 2px solid red;
+  padding: 15px;
+  box-shadow: 0 0 20px red;
 }
