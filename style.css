@@ -1,62 +1,53 @@
 body {
-  background-color: #111;
-  color: #fff;
-  font-family: Arial, sans-serif;
-  text-align: center;
-}
-.container {
-  max-width: 600px;
-  margin: 50px auto;
-  padding: 20px;
-  border: 2px solid #0ff;
-  border-radius: 10px;
-  box-shadow: 0 0 20px #0ff;
-}
-input {
-  display: block;
-  margin: 10px auto;
-  padding: 10px;
-  width: 80%;
-  border-radius: 5px;
-  border: 1px solid #0ff;
-  background: #111;
-  color: #0ff;
-}
-button.neon-btn {
-  margin: 10px;
-  padding: 10px 20px;
-  border: 1px solid #0ff;
-  border-radius: 5px;
-  background: #111;
-  color: #0ff;
-  cursor: pointer;
-  transition: 0.2s;
-}
-button.neon-btn:hover {
-  background: #0ff;
-  color: #111;
-}
-.neon-text {
-  color: #0ff;
-  text-shadow: 0 0 10px #0ff, 0 0 20px #0ff;
-}
-.level-display {
-  margin: 10px 0;
-  font-size: 1.2em;
-}
-.admin-icon, .leaderboard-icon {
-  cursor: pointer;
-  margin-left: 10px;
-}
-.modal {
-  display: none;
-  background-color: #222;
-  border: 2px solid #0ff;
-  padding: 10px;
-  border-radius: 10px;
-}
-.modal ul {
-  list-style: none;
-  padding: 0;
+    background: #0b0000;
+    color: #ff2a2a;
+    font-family: Arial, sans-serif;
+    text-align: center;
 }
 
+.neon-text {
+    color: #ff2a2a;
+    text-shadow:
+        0 0 5px #ff0000,
+        0 0 10px #ff0000,
+        0 0 20px #ff0000,
+        0 0 40px #ff0000;
+}
+
+.auth-box {
+    border: 2px solid #ff0000;
+    box-shadow: 0 0 15px #ff0000;
+    padding: 20px;
+    width: 320px;
+    margin: 20px auto;
+    border-radius: 10px;
+}
+
+input {
+    width: 90%;
+    padding: 8px;
+    margin: 6px 0;
+    background: #120000;
+    border: 1px solid #ff0000;
+    color: #ff2a2a;
+}
+
+button {
+    margin-top: 10px;
+    padding: 10px;
+    width: 95%;
+    background: transparent;
+    border: 2px solid #ff0000;
+    color: #ff2a2a;
+    cursor: pointer;
+    box-shadow: 0 0 10px #ff0000;
+}
+
+button:hover {
+    background: #ff0000;
+    color: black;
+}
+
+p {
+    color: #ffaaaa;
+}
