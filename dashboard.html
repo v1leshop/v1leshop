@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+  <h1>Admin Dashboard</h1>
+
+  <h2>Tokens</h2>
+  <input type="text" id="newToken" placeholder="New token">
+  <button onclick="createToken()">Create Token</button>
+
+  <h2>Products</h2>
+  <div id="productToggles"></div>
+
+  <h2>Store Status</h2>
+  <button onclick="toggleStore()">Toggle Open/Close</button>
+  <p id="storeStatus"></p>
+
+  <h2>Data</h2>
+  <button onclick="exportData()">Export JSON</button>
+  <input type="file" id="importFile" onchange="importData(event)">
+</div>
+<script src="script.js"></script>
+</body>
+</html>
