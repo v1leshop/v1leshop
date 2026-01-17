@@ -1,0 +1,6 @@
+body { font-family: Arial, sans-serif; background:#0f0f0f; color:white; display:flex; justify-content:center; align-items:center; height:100vh; margin:0;}
+.container { background:#1a1a1a; padding:40px; border-radius:12px; width:90%; max-width:400px; box-shadow:0 0 20px rgba(0,0,0,0.5);}
+input { width:100%; padding:10px; margin:5px 0; border-radius:6px; border:none;}
+button { width:100%; padding:10px; background:#1db954; color:black; border:none; border-radius:6px; margin:5px 0; cursor:pointer;}
+button:hover { background:#17a44a;}
+#adminIcon { display:none; }
