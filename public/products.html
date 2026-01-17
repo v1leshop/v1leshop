@@ -1,41 +1,24 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Products</title>
+  <title>Products • v1leshop</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="top-bar">
-  <div id="currentUserLabel"></div>
-  <div class="icons">
-    <span onclick="showLeaderboard()">🏆</span>
-    <span onclick="logout()">🚪</span>
-  </div>
-</div>
+<header>
+  <span id="currentUserLabel"></span>
+  <span id="userLevel"></span>
+  <button onclick="logout()">Logout</button>
+</header>
 
-<h1 class="neon-title">Products</h1>
-<div id="userLevel"></div>
+<h2>🛒 Products</h2>
 
 <div id="productsList"></div>
 
-<!-- ACCOUNT SETTINGS -->
-<div class="account-box">
-  <h3>Account Settings</h3>
-  <input id="editEmail" placeholder="Email">
-  <input id="editTelegram" placeholder="Telegram">
-  <button class="neon-btn small" onclick="updateAccount()">Save</button>
-</div>
+<h3>🧾 Last 5 Orders</h3>
+<div id="lastOrders"></div>
 
-<!-- LEADERBOARD -->
-<div id="leaderboardModal" class="modal">
-  <div class="modal-content">
-    <h2>Weekly Leaderboard</h2>
-    <ul id="leaderboardList"></ul>
-    <button class="neon-btn small" onclick="closeLeaderboard()">Close</button>
-  </div>
-</div>
-
-<script src="script.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
