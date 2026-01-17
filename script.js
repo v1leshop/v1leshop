@@ -1,3 +1,22 @@
+// === TOKEN PAGE LOGIC ===
+function verifyToken(){
+  const token = document.getElementById("tokenInput").value.trim();
+  const validTokens = JSON.parse(localStorage.getItem(TOKENS_KEY));
+  if(validTokens.includes(token)){
+    localStorage.setItem("hasAccess", "true");
+    window.location.href="products.html";
+  } else {
+    document.getElementById("tokenMsg").textContent = "Invalid token!";
+  }
+}
+
+// Redirect users to token page if they haven't entered a valid token
+if(window.location.pathname.endsWith("products.html")){
+  if(localStorage.getItem("hasAccess") !== "true"){
+    window.location.href="token.html";
+  }
+}
+
 // === LOCAL STORAGE KEYS ===
 const USERS_KEY = "v1leshopUsers";
 const TOKENS_KEY = "v1leshopTokens";
