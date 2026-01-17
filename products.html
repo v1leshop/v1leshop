@@ -9,11 +9,17 @@
 <body>
 <div class="container">
   <h1 class="neon-text">Products</h1>
+  <div id="userLevel" class="level-display"></div>
   <div id="productsList" class="products-grid"></div>
   <button class="neon-btn" onclick="logout()">Logout</button>
   <span id="adminIcon" class="admin-icon">⚙️</span>
+  <span id="leaderboardIcon" class="leaderboard-icon" onclick="showLeaderboard()">🏆</span>
+  <div id="leaderboardModal" class="modal">
+    <h2>Weekly Leaderboard</h2>
+    <ul id="leaderboardList"></ul>
+    <button onclick="closeLeaderboard()">Close</button>
+  </div>
 </div>
 <script src="script.js"></script>
 </body>
 </html>
-
