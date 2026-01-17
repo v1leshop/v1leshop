@@ -61,25 +61,52 @@ function signup(){
     const p = document.getElementById("signupPassword").value.trim();
     const t = document.getElementById("signupTelegram").value.trim();
     const e = document.getElementById("signupEmail").value.trim();
-    const a = document.getElementById("isAdmin").checked;
-    const users = JSON.parse(localStorage.getItem(USERS_KEY));
-    if(users.find(x=>x.username===u)){
-        document.getElementById("authMsg").textContent="User exists!";
+
+    if(!u || !p || !t || !e){
+        document.getElementById("signupMsg").textContent="All fields are required!";
         return;
     }
-    users.push({username:u,password:p,telegram:t,email:e,level:1,xp:0,isAdmin:a,private:false});
+
+    const users = JSON.parse(localStorage.getItem(USERS_KEY));
+
+    // Protect admin account
+    if(u.toLowerCase() === ADMIN_ACCOUNT.username.toLowerCase() || e.toLowerCase() === ADMIN_ACCOUNT.email.toLowerCase()){
+        document.getElementById("signupMsg").textContent="Cannot use admin username/email!";
+        return;
+    }
+
+    if(users.find(x=>x.username===u || x.email===e)){
+        document.getElementById("signupMsg").textContent="Username or Email already exists!";
+        return;
+    }
+
+    users.push({username:u,password:p,telegram:t,email:e,level:1,xp:0,isAdmin:false,private:false});
     localStorage.setItem(USERS_KEY,JSON.stringify(users));
-    document.getElementById("authMsg").textContent="Signup success!";
+    document.getElementById("signupMsg").textContent="Signup successful! You can now login.";
 }
 
 function login(){
-    const u = document.getElementById("loginUsername").value.trim();
+    const u = document.getElementById("loginUserEmail").value.trim();
     const p = document.getElementById("loginPassword").value.trim();
     const t = document.getElementById("loginTelegram").value.trim();
-    const e = document.getElementById("loginEmail").value.trim();
+
+    if(!u || !p || !t){
+        document.getElementById("loginMsg").textContent="All fields are required!";
+        return;
+    }
+
     const users = JSON.parse(localStorage.getItem(USERS_KEY));
-    const user = users.find(x=>x.username===u && x.password===p && x.telegram===t && x.email===e);
-    if(!user){ document.getElementById("authMsg").textContent="Login failed"; return; }
+    const user = users.find(x=> 
+        (x.username.toLowerCase() === u.toLowerCase() || x.email.toLowerCase() === u.toLowerCase()) &&
+        x.password === p &&
+        x.telegram === t
+    );
+
+    if(!user){
+        document.getElementById("loginMsg").textContent="Login failed!";
+        return;
+    }
+
     localStorage.setItem("currentUser",JSON.stringify(user));
     window.location.href="products.html";
 }
@@ -114,7 +141,7 @@ if(window.location.pathname.endsWith("products.html")){
         const gramInput = document.createElement("input");
         gramInput.type = "number";
         gramInput.step = "0.5";
-        gramInput.min = "0.5";
+        gramInput.min = "2";
         gramInput.placeholder = "Enter grams (min 2g / $20)";
         div.appendChild(gramInput);
 
@@ -186,14 +213,21 @@ function showLeaderboard(){
         list.appendChild(li);
     });
 }
-function closeLeaderboard(){ document.getElementById("leaderboardModal").style.display="none"; }
+
+function closeLeaderboard(){
+    document.getElementById("leaderboardModal").style.display="none";
+}
 
 // === DASHBOARD LOGIC ===
 if(window.location.pathname.endsWith("dashboard.html")){
     const user = JSON.parse(localStorage.getItem("currentUser"));
-    if(!user || !(user.isAdmin || ADMIN_EMAILS.includes(user.username))){ alert("Access denied"); window.location.href="index.html"; }
+    if(!user || !(user.isAdmin || ADMIN_EMAILS.includes(user.username))){
+        alert("Access denied"); 
+        window.location.href="index.html";
+    }
     renderDashboard();
 }
+
 function renderDashboard(){
     const products = JSON.parse(localStorage.getItem(PRODUCTS_KEY));
     const container = document.getElementById("productToggles");
@@ -221,6 +255,7 @@ function renderDashboard(){
             const div = document.createElement("div");
             div.innerHTML = `<b>${o.product}</b> - ${o.grams}g - $${o.total}<br>
             User: ${o.user}<br>Email: ${o.email}<br>Telegram: ${o.telegram}`;
+            
             const acceptBtn = document.createElement("button");
             acceptBtn.textContent="Accept";
             acceptBtn.onclick=()=>{
@@ -229,6 +264,7 @@ function renderDashboard(){
                 localStorage.setItem(ORDERS_KEY,JSON.stringify(orders));
                 renderDashboard();
             };
+            
             const rejectBtn = document.createElement("button");
             rejectBtn.textContent="Reject";
             rejectBtn.onclick=()=>{
@@ -237,6 +273,7 @@ function renderDashboard(){
                 localStorage.setItem(ORDERS_KEY,JSON.stringify(orders));
                 renderDashboard();
             };
+            
             div.appendChild(acceptBtn);
             div.appendChild(rejectBtn);
             orderDiv.appendChild(div);
@@ -253,12 +290,14 @@ function createToken(){
     localStorage.setItem(TOKENS_KEY,JSON.stringify(tokens));
     alert("Token added: "+token);
 }
+
 function toggleStore(){
     const store = JSON.parse(localStorage.getItem(STORE_KEY));
     store.open = !store.open;
     localStorage.setItem(STORE_KEY,JSON.stringify(store));
     renderDashboard();
 }
+
 function exportData(){
     const data = {
         users: JSON.parse(localStorage.getItem(USERS_KEY)),
@@ -273,6 +312,7 @@ function exportData(){
     a.download="v1leshop_data.json";
     a.click();
 }
+
 function importData(event){
     const file = event.target.files[0];
     const reader = new FileReader();
