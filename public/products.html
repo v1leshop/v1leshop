@@ -1,24 +1,97 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Products • v1leshop</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>V1LEFarm Products</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f9f9f9; margin: 0; padding: 0; }
+    nav { background: #333; color: white; padding: 10px 20px; display: flex; justify-content: flex-end; gap: 10px; }
+    nav a { color: white; text-decoration: none; padding: 8px 15px; border-radius: 4px; background: #4CAF50; }
+    nav a:hover { background: #45a049; }
+    h1 { text-align: center; margin-top: 20px; }
+    .products-container { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; padding: 20px; }
+    .product-card { background: white; border: 1px solid #ccc; border-radius: 8px; width: 250px; padding: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); text-align: center; }
+    .product-card h3 { margin: 0 0 10px 0; }
+    .product-card p { margin: 5px 0; }
+    .product-card input[type="range"] { width: 100%; margin-top: 10px; }
+    .product-card button { margin-top: 10px; padding: 8px 12px; border: none; border-radius: 5px; background: #2196F3; color: white; cursor: pointer; }
+    .product-card button:hover { background: #1976d2; }
+    @media (max-width: 600px) {
+      .products-container { flex-direction: column; align-items: center; }
+      .product-card { width: 90%; }
+    }
+  </style>
 </head>
 <body>
 
-<header>
-  <span id="currentUserLabel"></span>
-  <span id="userLevel"></span>
-  <button onclick="logout()">Logout</button>
-</header>
+  <nav>
+    <a href="leaderboard.html">Leaderboard</a>
+    <a href="logout.html">Logout</a>
+  </nav>
 
-<h2>🛒 Products</h2>
+  <h1>Products</h1>
 
-<div id="productsList"></div>
+  <div class="products-container" id="productsContainer"></div>
 
-<h3>🧾 Last 5 Orders</h3>
-<div id="lastOrders"></div>
+  <script>
+    const products = [
+      {
+        id: 'spritepop',
+        name: 'Sprite Popperz',
+        description: 'A Refreshing Burst of Flavor!',
+        minGrams: 2,
+        maxGrams: 10,
+        step: 0.5,
+        pricePerGram: 10
+      },
+      {
+        id: 'killergreen',
+        name: 'Killer Green Buds',
+        description: 'Have A Taste Of This Green & Sticky Bud!',
+        minGrams: 2,
+        maxGrams: 10,
+        step: 0.5,
+        pricePerGram: 20
+      }
+    ];
 
-<script src="app.js"></script>
+    const container = document.getElementById('productsContainer');
+
+    products.forEach(product => {
+      const card = document.createElement('div');
+      card.className = 'product-card';
+      card.innerHTML = `
+        <h3>${product.name}</h3>
+        <p>${product.description}</p>
+        <p>Price per gram: $${product.pricePerGram}</p>
+        <label for="${product.id}-grams">Select grams (min ${product.minGrams}g):</label>
+        <input type="range" id="${product.id}-grams" min="${product.minGrams}" max="${product.maxGrams}" step="${product.step}" value="${product.minGrams}">
+        <p>Selected: <span id="${product.id}-value">${product.minGrams}</span>g</p>
+        <p>Total: $<span id="${product.id}-total">${(product.minGrams * product.pricePerGram).toFixed(2)}</span></p>
+        <button onclick="orderProduct('${product.id}')">Order</button>
+      `;
+      container.appendChild(card);
+
+      const gramsInput = document.getElementById(`${product.id}-grams`);
+      const gramsValue = document.getElementById(`${product.id}-value`);
+      const totalSpan = document.getElementById(`${product.id}-total`);
+
+      gramsInput.addEventListener('input', () => {
+        const grams = parseFloat(gramsInput.value);
+        gramsValue.textContent = grams;
+        totalSpan.textContent = (grams * product.pricePerGram).toFixed(2);
+      });
+    });
+
+    function orderProduct(id) {
+      const grams = parseFloat(document.getElementById(`${id}-grams`).value);
+      const product = products.find(p => p.id === id);
+      const total = (grams * product.pricePerGram).toFixed(2);
+      alert(`Ordering ${grams}g of ${product.name} for $${total}`);
+      // Replace alert with your website's order submission logic
+    }
+  </script>
+
 </body>
 </html>
