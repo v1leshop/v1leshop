@@ -3,37 +3,42 @@
 <head>
   <meta charset="UTF-8" />
   <title>v1leshop</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-<div class="auth-box">
-  <h1 class="neon">v1leshop</h1>
+  <div class="container">
+    <h1 class="logo">V1LE SHOP</h1>
 
-  <!-- LOGIN -->
-  <h3>Login</h3>
-  <input id="loginUser" placeholder="Username or Email">
-  <input id="loginPass" type="password" placeholder="Password">
-  <button onclick="login()">Login</button>
+    <!-- LOGIN -->
+    <div class="card">
+      <h2>Login</h2>
+      <input id="loginUser" placeholder="Username or Email" />
+      <input id="loginPass" type="password" placeholder="Password" />
+      <button onclick="login()">Login</button>
+    </div>
 
-  <hr>
+    <!-- SIGN UP -->
+    <div class="card">
+      <h2>Sign Up</h2>
+      <input id="signupUser" placeholder="Username" />
+      <input id="signupEmail" placeholder="Email" />
+      <input id="signupTelegram" placeholder="Telegram Username" />
+      <input id="signupPass" type="password" placeholder="Password" />
+      <button onclick="signup()">Create Account</button>
+    </div>
 
-  <!-- SIGN UP -->
-  <h3>Sign Up</h3>
-  <input id="suUser" placeholder="Username">
-  <input id="suEmail" placeholder="Email">
-  <input id="suTelegram" placeholder="Telegram Username">
-  <input id="suPass" type="password" placeholder="Password">
-  <button onclick="signup()">Create Account</button>
+    <!-- ADMIN KEY -->
+    <div class="card admin-card">
+      <h2>Admin Key</h2>
+      <input id="adminKey" placeholder="Enter Admin Key" />
+      <button onclick="adminKeyLogin()">Admin Login</button>
+    </div>
 
-  <hr>
+    <p id="msg"></p>
+  </div>
 
-  <!-- ADMIN KEY -->
-  <h3>Admin Key</h3>
-  <input id="adminKey" placeholder="Enter Admin Key">
-  <button onclick="adminKeyLogin()">Admin Login</button>
-</div>
-
-<script src="script.js"></script>
+  <!-- IMPORTANT -->
+  <script src="app.js"></script>
 </body>
 </html>
